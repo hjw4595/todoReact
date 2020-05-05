@@ -9,7 +9,7 @@ class TodoList extends React.Component {
         }
     }
     AddItem(){
-        const { inputValue } = this.state;
+        const inputValue = this.state;
         const updateList = this.state.list;
         updateList.push(inputValue);
         this.setState({
