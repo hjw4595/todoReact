@@ -1,15 +1,9 @@
 import { NOTE_FRAGMENT } from "./fragments";
 import { GET_NOTES } from "./queries";
+import { saveNotes,restoreNotes } from "./offline";
 
 export const defaults = {
-    notes: [
-        {
-            __typename:"Note",
-            id:1,
-            title:"first",
-            content:"asd"
-        }
-    ]
+  notes: restoreNotes()
   };
   export const typeDefs = [
     `
@@ -58,25 +52,27 @@ export const defaults = {
                   notes: [newNote, ...notes]
                 }
               });
+              saveNotes(cache);
               return newNote;
             },
             editNote: (_, {id, title, content}, { cache }) => {
-                const noteId = cache.config.dataIdFromObject({
-                  __typename: "Note",
-                    id,
-                });
-                const note = cache.readFragment({ fragment: NOTE_FRAGMENT, id:noteId });
-                const updataNote ={
+              const noteId = cache.config.dataIdFromObject({
+                __typename: "Note",
+                id
+              });
+                const note = cache.readFragment({ fragment: NOTE_FRAGMENT, id: noteId });
+                const updatedNote  ={
                     ...note,
                     title,
                     content
                 }
-                cache.writeFragement({
-                    id:noteId,
+                cache.writeFragment({
+                    id: noteId,
                     fragment: NOTE_FRAGMENT,
-                    data: updataNote
+                    data: updatedNote 
                 });
-                return 
+                saveNotes(cache);
+                return updatedNote 
             }
     }
   };
