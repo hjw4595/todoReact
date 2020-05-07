@@ -1,7 +1,7 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import Editor from "../../Componentes/Editer/index";
+import Editor from "../../Componentes/Editor/index";
 
 const ADD_NOTE = gql`
   mutation createNote($title: String!, $content: String!) @client {

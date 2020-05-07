@@ -11,7 +11,7 @@ export default () => (
             <Switch>
                 <Route path="/" exact component={Notes}/>
                 <Route path="/Add" exact component={AddNote}/>
-                <Route path="/Edit/:id" component={EditNote}/>
+                <Route path="/edit/:id" component={EditNote}/>
                 <Route path="/note/:id" component={Note} />
                 <Redirect from="*" to="/"/>
             </Switch>
