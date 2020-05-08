@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Query } from "react-apollo";
+import { Query,Mutation } from "react-apollo";
 import styled from "styled-components";
 import { GET_NOTES } from "../../queries";
+import gql from "graphql-tag";
 
 const Header = styled.div`
   margin-bottom: 50px;
@@ -55,7 +56,16 @@ const NoteTitle = styled.span`
   font-weight: 600;
   font-size: 20px;
 `;
-
+const NoteteContent = styled.span`
+  padding-left: 10px;
+`
+export const DELETE_NOTE = gql`
+  mutation deleteNote($id: Int!) @client {
+    deleteNote(id: $id) {
+      id
+    }
+  }
+`;
 export default class Add extends React.Component {
   render() {
     return (
@@ -72,13 +82,19 @@ export default class Add extends React.Component {
           <Notes>
           <Query query={GET_NOTES}>
             {({ data }) =>
-              data.notes
-                ? data.notes.map(note => (
+              data?.notes
+                ? data.notes.map((note) => (
+                  <>
                     <Link to={`/note/${note.id}`} key={note.id}>
                       <Note>
                         <NoteTitle>{note.title}</NoteTitle>
+                        <NoteteContent>{note.content}</NoteteContent>
                       </Note>
                     </Link>
+                    <Mutation mutation={DELETE_NOTE} variables={{id : note.id}}>
+                      {deleteItem => <Button onClick={() => window.confirm("Are you sure?") && deleteItem()}>delet</Button>}
+                    </Mutation>
+                    </>
                   ))
                 : null
             }
