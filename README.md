@@ -1,1 +1,3 @@
-deletItem - 같은값이 존재하면 같이삭제됨 
+graphql todo List 
+
+add / edit / delete
